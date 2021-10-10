@@ -1,14 +1,69 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import styled from 'styled-components'
+import { selectName,selectPhoto,setSignout,setUserLogin } from '../features/user/UserSlice'
+import { useSelector } from 'react-redux'
+import {auth,provider} from '../firebaseConfig'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 export default function Header() {
+    const userName=useSelector(selectName)
+    const userPhoto=useSelector(selectPhoto)
+    const dispatch=useDispatch()
+    const history=useHistory()
+    useEffect(()=>{
+        auth.onAuthStateChanged(async (user)=>{
+            if(user){
+                dispatch(setUserLogin(
+                    {
+                        name:user.displayName,
+                        email:user.email,
+                        photo:user.photoURL
+                    }
+                ))
+                history.push("/home")
+            }
+        })
+    },[])
+
+
+
+    const signIn=()=>{
+        auth.signInWithPopup(provider)
+        .then((result)=>{
+            let user=result.user
+
+            dispatch(setUserLogin(
+                {
+                    name:user.displayName,
+                    email:user.email,
+                    photo:user.photoURL
+                }
+            ))
+            history.push("/")
+        })
+    }
+
+    const signOut=()=>{
+        auth.signOut().then(()=>{
+            dispatch(setSignout())
+            history.push("/login")
+            
+        })
+    }
+    
     return (
         <Nav>
             <Logo src="/images/logo.svg" />
-            <NavMenu >
+            {!userName ? <LoginContainer><Login
+                onClick={signIn}
+            >Login</Login></LoginContainer> :
+                <>
+                <NavMenu >
                 <a href>
                     <Logo src="images/home-icon.svg"/>
                     <span>HOME</span>
                 </a>
+                
                 <a href>
                     <Logo src="images/search-icon.svg"/>
                     <span>SEARCH</span>
@@ -30,7 +85,13 @@ export default function Header() {
                     <span>SEREIS</span>
                 </a>
             </NavMenu>
-            <UserImage src="images/user.jpg" />
+            <UserImage src={userPhoto}
+                onClick={signOut}
+            /> 
+                </>
+                
+            }
+            
         </Nav>
     )
 }
@@ -85,6 +146,8 @@ const NavMenu=styled.div`
                 opacity:1;
             }
         }
+        @media (max-width: 768px) {
+            display: none;
     }
 `
 
@@ -93,4 +156,27 @@ const UserImage=styled.img`
     height:48px;
     border-radius:50%;
     cursor:pointer;
+`
+
+const Login=styled.div`
+    border: 1px solid #f9f9f9;
+    padding: 8px 16px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.6);
+    cursor: pointer;
+    transition: all 250ms;
+    
+    &:hover{
+        background-color: rgba(249,249,249,0.8);
+        color: black;
+        border-color: transparent;
+    }
+`
+
+const LoginContainer=styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: end;
 `
