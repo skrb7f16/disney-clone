@@ -77,6 +77,12 @@ const Background=styled.div`
         height:100%;
         object-fit:cover;
     }
+    @media (max-width:786px){
+        img{
+            height:60% ;
+            object-fit:contain;
+        }
+    }
 `
 
 const ImageTitle=styled.div`
@@ -95,6 +101,11 @@ const ImageTitle=styled.div`
 const Controls=styled.div`
     display: flex;
     align-items: center;
+    @media (max-width:786px){
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-gap: 20px;
+    }
 `
 
 const PlayButton=styled.div`

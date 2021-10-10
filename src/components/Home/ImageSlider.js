@@ -68,5 +68,9 @@ const Wrap=styled.div`
         &:hover{
             border:4px solid rgb(249, 249, 249);
         }
+
+        @media (max-width:786px){
+            
+        }
     }
 `

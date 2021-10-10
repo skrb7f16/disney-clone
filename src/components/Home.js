@@ -6,6 +6,10 @@ import Movies from './Home/Movies'
 import db from '../firebaseConfig'
 import {useDispatch} from 'react-redux'
 import {setMovies} from '../features/movie/movieSlice'
+import Recommend from './Home/Recommend'
+import New from './Home/New'
+import Trending from './Home/Trending'
+import Original from './Home/Original'
 function Home() {
     const dispatch=useDispatch();
     useEffect(()=>{
@@ -18,7 +22,10 @@ function Home() {
         <Container>
             <ImageSlider />
             <Viewers />
-            <Movies />
+            <Recommend />
+            <New />
+            <Trending />
+            <Original />
         </Container>
     )
 }

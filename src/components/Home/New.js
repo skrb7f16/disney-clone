@@ -3,16 +3,17 @@ import styled from 'styled-components'
 import { selectMovies } from '../../features/movie/movieSlice'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-function Movies() {
+
+function New() {
     const movies=useSelector(selectMovies)
-    console.log(movies)
     return (
         <Container>
             <h4>
-                Recommended for you
+                New Commers
             </h4>
             <Content>
                 {movies && movies.map((movie,index)=>{
+                    if(movie.type!=="new")return null;
                     return (<Wrap key={index}>
                         <Link to={`/detail/${index}`}>
                         <img src={movie.cardImg} alt=""/>
@@ -26,7 +27,7 @@ function Movies() {
     )
 }
 
-export default Movies
+export default New
 
 const Container=styled.div`
 

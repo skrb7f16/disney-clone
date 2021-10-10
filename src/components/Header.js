@@ -103,6 +103,7 @@ const Nav=styled.nav`
     align-items:center;
     padding:0 36px;
     overflow-x:hidden;
+
     `
 const Logo=styled.img`
     max-width:80px;

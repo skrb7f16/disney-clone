@@ -3,16 +3,17 @@ import styled from 'styled-components'
 import { selectMovies } from '../../features/movie/movieSlice'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-function Movies() {
+
+function Trending() {
     const movies=useSelector(selectMovies)
-    console.log(movies)
     return (
         <Container>
             <h4>
-                Recommended for you
+                Trending
             </h4>
             <Content>
                 {movies && movies.map((movie,index)=>{
+                    if(movie.type!=="trending")return null
                     return (<Wrap key={index}>
                         <Link to={`/detail/${index}`}>
                         <img src={movie.cardImg} alt=""/>
@@ -26,7 +27,7 @@ function Movies() {
     )
 }
 
-export default Movies
+export default Trending
 
 const Container=styled.div`
 
